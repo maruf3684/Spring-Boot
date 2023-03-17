@@ -1,0 +1,90 @@
+#Run project
+mvn spring-boot:run
+
+#For auto restart
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+#
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1.maven pakage manager should be installed
+->sudo apt install maven
+->mvn -v
+
+2.For latest maven download
+#download apache maven then extract
+#move file in /opt folder
+->nano ~/.bashrc
+paste that below 2 line
+#SET JAVA PATH
+export PATH="/usr/lib/jvm/jdk-19.0.2/bin:$PATH"
+
+#SET MAVEN PATH
+export PATH="/opt/apache-maven-3.9.0/bin:$PATH"
+
+3.after that edit pom.xml
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>3.0.4</version>
+			</plugin>
+		</plugins>
+	</build>
+
+
+4.finally:
+mvn spring-boot:run
+
