@@ -1,36 +1,30 @@
 package com.practice.mycrud.services;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
-
+import com.practice.mycrud.dao.BookRepository;
 import com.practice.mycrud.entities.BookEntity;
+
+import jakarta.transaction.Transactional;
 
 @Component
 public class BookService {
-    private static List<BookEntity> booklist = new ArrayList<>();
 
-    // class load hole static block chole
-    static {
-        booklist.add(new BookEntity(1, "java", "abc"));
-        booklist.add(new BookEntity(2, "python", "def"));
-        booklist.add(new BookEntity(3, "node", "xyz"));
-    }
+    @Autowired
+    private BookRepository bookRepository;
 
     // get all books
     public List<BookEntity> getAllBooks() {
-        return booklist;
+        List<BookEntity> books = this.bookRepository.findAll();
+        return books;
     }
 
     // get single books by id
     public BookEntity getBookById(int id) {
         BookEntity book = null;
         try {
-            book = booklist.stream().filter(e -> e.getId() == id).findFirst().get();
+            //book = booklist.stream().filter(e -> e.getId() == id).findFirst().get();
+            book = this.bookRepository.findById(id);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -40,36 +34,26 @@ public class BookService {
 
     // adding books
     public BookEntity addBook(BookEntity book) {
-        booklist.add(book);
-        return book;
+        BookEntity result = this.bookRepository.save(book);
+        return result;
     }
+    
 
     public void deleteBook(int id) {
-        booklist = booklist.stream().filter(book -> {
-            if (book.getId() != id) {
-                return true;
-            } else {
-                return false;
-            }
-        }).collect(Collectors.toList());
+        this.bookRepository.deleteById(id);;
     }
 
     public List<BookEntity> updateBook(int id, BookEntity newbook) throws Exception {
 
-        BookEntity book = this.getBookById(id);
+        BookEntity book = this.bookRepository.findById(id);
 
         if (book==null){
             throw new Exception("Object not found");
         }
 
-        return booklist.stream().map(b -> {
-            if (b.getId() != id) {
-                return b;
-            } else {
-                b.setAuthor(newbook.getTitle());
-                b.setTitle(newbook.getAuthor());
-                return b;
-            }
-        }).collect(Collectors.toList());
+        newbook.setId(id);
+        this.bookRepository.save(newbook);
+
+        return getAllBooks();
     }
 }

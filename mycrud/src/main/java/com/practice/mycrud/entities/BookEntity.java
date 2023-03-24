@@ -1,10 +1,24 @@
 package com.practice.mycrud.entities;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+
+@Entity
+@Table(name="books")
 public class BookEntity {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "book_id")
     private int id;
     private String title;
     private String author;
-    
+
     public BookEntity(int id, String title, String author) {
         this.id = id;
         this.title = title;
